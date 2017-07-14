@@ -1,9 +1,13 @@
 package com.lody.legend;
 
+import android.util.Log;
+
 import com.lody.legend.art.ArtMethod;
 import com.lody.legend.dalvik.DalvikMethodStruct;
+import com.lody.legend.utility.LegendNative;
 import com.lody.legend.utility.Logger;
 import com.lody.legend.utility.Memory;
+import com.lody.legend.utility.NativeStructModel;
 import com.lody.legend.utility.Runtime;
 import com.lody.legend.utility.Struct;
 
@@ -171,7 +175,7 @@ public class HookManager {
         byte[] hookInsSizeData = dvmHookMethod.insSize.read();
         byte[] hookRegisterSizeData = dvmHookMethod.registersSize.read();
         byte[] hookAccessFlags = dvmHookMethod.accessFlags.read();
-        byte[] hookNativeFunc = dvmHookMethod.nativeFunc.read();
+        //byte[] hookNativeFunc = dvmHookMethod.nativeFunc.read();
 
         dvmOriginMethod.clazz.write(hookClassData);
         dvmOriginMethod.insns.write(hookInsnsData);
@@ -255,6 +259,17 @@ public class HookManager {
         long memoryAddress = Memory.alloc(ART_HOOK_INFO_SIZE);
         Memory.write(memoryAddress,hookInfo.array());
         artOrigin.setEntryPointFromJni(memoryAddress);
+
+
+//        byte [] a = Memory.read(LegendNative.getMethodAddress(hook),40);
+//        Memory.write(LegendNative.getMethodAddress(origin),a);
+//        //Memory.copy(LegendNative.getMethodAddress(origin),LegendNative.getMethodAddress(hook),40);
+//        Log.e("ssss","ssssssss-"+originPointFromQuickCompiledCode);
+//
+//        ArtMethod artOrigin2 = ArtMethod.of(origin);
+//        long originPointFromQuickCompiledCode2 = artOrigin2.getEntryPointFromQuickCompiledCode();
+//        Log.e("ssss","sssssss2-"+originPointFromQuickCompiledCode2);
+
 
         return backup;
     }
@@ -421,4 +436,13 @@ public class HookManager {
 
     private static final class NULL {}
 
+    public static long getMethodSize() {
+        long a [] = new long[2];
+        int i = 0;
+        for (Method hookMethod : NativeStructModel.class.getDeclaredMethods()) {
+            a[i] = LegendNative.getMethodAddress(hookMethod);
+            i++;
+        }
+        return a[1]-a[0];
+    }
 }

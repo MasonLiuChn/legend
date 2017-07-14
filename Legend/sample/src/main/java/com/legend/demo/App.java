@@ -5,6 +5,8 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.telephony.TelephonyManager;
+import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.lody.legend.Hook;
@@ -18,10 +20,11 @@ public class App extends Application {
 
     public static boolean ENABLE_TOAST = true;
     public static boolean ALLOW_LAUNCH_ACTIVITY = true;
-
+    public static Application application;
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
+        application = this;
         HookManager.getDefault().applyHooks(App.class);
 
     }
@@ -32,27 +35,28 @@ public class App extends Application {
         HookManager.getDefault().callSuper(app);
     }
 
-
     @Hook("android.telephony.TelephonyManager::getSimSerialNumber")
-    public static String TelephonyManager_getSimSerialNumber(TelephonyManager thiz) {
-         return "110";
+    public static String TelephonyManager_getSimSerialNumber(Object object) {
+         return "110"+ object.getClass().getSimpleName();
     }
 
 
     @Hook("android.widget.Toast::show")
-    public static void Toast_show(Toast toast) {
+    public static void Toast_show(Test activity,Application application) {
         if (ENABLE_TOAST) {
-            HookManager.getDefault().callSuper(toast);
+            //HookManager.getDefault().callSuper(toast);
+            Log.e("sss","toast"+ activity.getClass().getSimpleName());
         }
     }
 
     @Hook("android.app.Activity::startActivity@android.content.Intent")
-    public static void Activity_startActivity(Activity activity, Intent intent) {
-        if (!ALLOW_LAUNCH_ACTIVITY) {
-            Toast.makeText(activity, "I am sorry to turn your Activity down :)", Toast.LENGTH_SHORT).show();
-        }else {
-            HookManager.getDefault().callSuper(activity, intent);
-        }
+    public static void Activity_startActivity() {
+//        if (!ALLOW_LAUNCH_ACTIVITY) {
+//            Toast.makeText(activity, "I am sorry to turn your Activity down :)", Toast.LENGTH_SHORT).show();
+//        }else {
+//            HookManager.getDefault().callSuper(activity, intent);
+//        }
+        Log.e("sss","toast");
     }
 
 }

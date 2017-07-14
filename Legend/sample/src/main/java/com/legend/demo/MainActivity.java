@@ -4,12 +4,15 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import static com.lody.legend.HookManager.getMethodSize;
 
 /**
  * @author Lody
@@ -54,6 +57,7 @@ public class MainActivity extends Activity {
                 TelephonyManager telephonyManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
                 telephonyManager.getSimSerialNumber();
                 String result = telephonyManager.getSimSerialNumber();
+                Log.e("ssssss",""+getMethodSize());
                 textView.setText("SimSerialNumber = " + result);
             }
         });
