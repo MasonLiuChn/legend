@@ -1,6 +1,6 @@
 # Fork后的改动
 
-使用阿里Sophix 里AOP方案 优化Legend 使之兼容性更强。
+使用阿里Sophix 里AOP方案（ArtMethod完全替换） 优化Legend 使之兼容性更强。
 
 
 # Legend
